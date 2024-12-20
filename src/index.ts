@@ -2,11 +2,20 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import db from "./db.js";
 import skypodsRoutes from "./routes/skypods.js";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 8080;
+
+const corsOptions = {
+  origin: "*",
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 
 // Middleware
 app.use(express.json());
@@ -16,7 +25,7 @@ app.use("/skypods", skypodsRoutes);
 
 // Test endpoint
 app.get("/", (req: Request, res: Response) => {
-  res.send("SkyPods API is running!");
+  res.status(200).json("SkyPods API is running!");
 });
 
 // Start the server
